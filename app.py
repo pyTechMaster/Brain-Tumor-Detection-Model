@@ -1,4 +1,3 @@
-
 import streamlit as st
 import tensorflow as tf
 import numpy as np
@@ -42,7 +41,7 @@ st.markdown("""
 @st.cache_resource
 def load_model():
     try:
-        model = tf.keras.models.load_model('brain_tumor_model.h5')
+        model = tf.keras.models.load_model("brain_tumor_model.h5")
         return model
     except Exception as e:
         st.error(f"❌ Error loading model: {e}")
@@ -54,9 +53,9 @@ def preprocess_image(image, target_size=128):
         image = np.array(image)
 
     if len(image.shape) == 3:
-        if image.shape[2] == 4:  # RGBA
+        if image.shape[2] == 4:
             image = cv2.cvtColor(image, cv2.COLOR_RGBA2RGB)
-    else:  # Grayscale
+    else:
         image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
 
     image = cv2.resize(image, (target_size, target_size))
@@ -69,7 +68,7 @@ def predict_tumor(model, image):
     processed_img = preprocess_image(image)
     prediction = model.predict(processed_img, verbose=0)
 
-    classes = ['Glioma', 'Meningioma', 'No Tumor', 'Pituitary']
+    classes = ["Glioma", "Meningioma", "No Tumor", "Pituitary"]
     predicted_idx = np.argmax(prediction[0])
     confidence = prediction[0][predicted_idx]
 
@@ -111,7 +110,7 @@ def main():
     # File uploader
     uploaded_file = st.file_uploader(
         "Choose an MRI image file",
-        type=['png', 'jpg', 'jpeg'],
+        type=["png", "jpg", "jpeg"],
         help="Upload a clear MRI brain scan image"
     )
 
@@ -123,7 +122,6 @@ def main():
 
             image = Image.open(uploaded_file)
 
-            # Updated Streamlit parameter
             st.image(
                 image,
                 caption="MRI Brain Scan",
@@ -164,10 +162,10 @@ def main():
                         st.subheader("📊 All Probabilities")
 
                         classes = [
-                            'Glioma',
-                            'Meningioma',
-                            'No Tumor',
-                            'Pituitary'
+                            "Glioma",
+                            "Meningioma",
+                            "No Tumor",
+                            "Pituitary"
                         ]
 
                         for class_name, prob in zip(classes, all_probs):
@@ -182,4 +180,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
