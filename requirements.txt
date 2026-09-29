@@ -1,5 +1,8 @@
+
 streamlit
 tensorflow
 pillow
 opencv-python
 numpy
+gunicorn
+
